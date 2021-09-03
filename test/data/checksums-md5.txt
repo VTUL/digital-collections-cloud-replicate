@@ -1,0 +1,3 @@
+e243bb39c844b3543a7726576c869caf,f1.txt
+4349cfeff8e2eb74dffc369bb5fd084e,item1/f2.txt
+d41d8cd98f00b204e9800998ecf8427e,Thumbs.db
