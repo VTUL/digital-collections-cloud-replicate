@@ -187,4 +187,4 @@ Project Link: [https://github.com/jimtuttle/digital-collections-cloud-replicate]
 [license-shield]: https://img.shields.io/github/license/jimtuttle/repo.svg?style=for-the-badge
 [license-url]: https://github.com/jimtuttle/digital-collections-cloud-replicate/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/jimtuttle
+[linkedin-url]: https://linkedin.com/in/jjtuttle
