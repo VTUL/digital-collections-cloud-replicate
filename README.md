@@ -11,8 +11,8 @@
   <h3 align="center">Digital Collections Cloud Replicate</h3>
   <p align="center">
     <br />
-    <a href="https://github.com/jjtuttle/digital-collections-cloud-replicate/issues">Report Bug</a> |
-    <a href="https://github.com/jjtuttle/digital-collections-cloud-replicate/issues">Request Feature</a>
+    <a href="https://github.com/jimtuttle/digital-collections-cloud-replicate/issues">Report Bug</a> |
+    <a href="https://github.com/jimtuttle/digital-collections-cloud-replicate/issues">Request Feature</a>
   </p>
 
 
@@ -94,7 +94,7 @@ This is an example of how to list things you need to use the software and how to
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/jjtuttle/digital-collections-cloud-replicate.git
+   git clone https://github.com/jimtuttle/digital-collections-cloud-replicate.git
    ```
 2. Install libraries
    ```sh
@@ -150,7 +150,7 @@ cat /tmp/s3-replicate_in_jdw_JDW_2021-09-20-14-43-43.log
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/jjtuttle/digital-collections-cloud-replicate/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/jimtuttle/digital-collections-cloud-replicate/issues) for a list of proposed features (and known issues).
 
 
 
@@ -179,21 +179,21 @@ Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 Your Name - [@jjtuttle](https://twitter.com/@jjtuttle) - email
 
-Project Link: [https://github.com/jjtuttle/digital-collections-cloud-replicate](https://github.com/jjtuttle/digital-collections-cloud-replicate)
+Project Link: [https://github.com/jimtuttle/digital-collections-cloud-replicate](https://github.com/jimtuttle/digital-collections-cloud-replicate)
 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/jjtuttle/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/jjtuttle/digital-collections-cloud-replicate/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/jjtuttle/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/jjtuttle/digital-collections-cloud-replicate/network/members
-[stars-shield]: https://img.shields.io/github/stars/jjtuttle/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/jjtuttle/digital-collections-cloud-replicate/stargazers
-[issues-shield]: https://img.shields.io/github/issues/jjtuttle/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/jjtuttle/digital-collections-cloud-replicate/issues
-[license-shield]: https://img.shields.io/github/license/jjtuttle/repo.svg?style=for-the-badge
-[license-url]: https://github.com/jjtuttle/digital-collections-cloud-replicate/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/jimtuttle/repo.svg?style=for-the-badge
+[contributors-url]: https://github.com/jimtuttle/digital-collections-cloud-replicate/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/jimtuttle/repo.svg?style=for-the-badge
+[forks-url]: https://github.com/jimtuttle/digital-collections-cloud-replicate/network/members
+[stars-shield]: https://img.shields.io/github/stars/jimtuttle/repo.svg?style=for-the-badge
+[stars-url]: https://github.com/jimtuttle/digital-collections-cloud-replicate/stargazers
+[issues-shield]: https://img.shields.io/github/issues/jimtuttle/repo.svg?style=for-the-badge
+[issues-url]: https://github.com/jimtuttle/digital-collections-cloud-replicate/issues
+[license-shield]: https://img.shields.io/github/license/jimtuttle/repo.svg?style=for-the-badge
+[license-url]: https://github.com/jimtuttle/digital-collections-cloud-replicate/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/jjtuttle
+[linkedin-url]: https://linkedin.com/in/jimtuttle
