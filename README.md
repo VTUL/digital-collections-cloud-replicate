@@ -82,14 +82,6 @@ use that fixity digest to verify files on each move.  This tool does the followi
 
 To get a local copy up and running follow these simple steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
 ### Installation
 
 1. Clone the repo
@@ -132,7 +124,6 @@ $ ./s3-replicate.py -u s3://imgagestore/SpecScans/IAWA/JDW/ -d /home/jjt/Downloa
 Review logfile
 ```sh 
 $ cat /tmp/s3-replicate_in_jdw_JDW_2021-09-20-12-44-04.log
-cat /tmp/s3-replicate_in_jdw_JDW_2021-09-20-14-43-43.log
 2021-09-20 14:43:43,092 - INFO - Replicating files from /home/jjt/Downloads/ingest_test/in_jdw to s3://imagestore/SpecScans/IAWA/JDW/
 2021-09-20 14:43:43,102 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
 2021-09-20 14:43:43,380 - INFO - User has write access to S3 bucket
@@ -177,7 +168,7 @@ Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@jjtuttle](https://twitter.com/@jjtuttle) - email
+Your Name - [@jjtuttle](https://twitter.com/@jjtuttle) 
 
 Project Link: [https://github.com/jimtuttle/digital-collections-cloud-replicate](https://github.com/jimtuttle/digital-collections-cloud-replicate)
 
