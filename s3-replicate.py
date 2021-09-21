@@ -188,7 +188,7 @@ def validate_fixity(manifest, directory, verbosity, ignored):
         exit()
 
 
-def put_files(workdir, verbosity, uri, hashes, hexhashes):
+def put_files(workdir, verbosity, uri, hashes, hexhashes, ignore):
     message = 'Initiating file replication to {}'.format(uri)
     logging.info(message)
     if verbosity:
@@ -198,19 +198,20 @@ def put_files(workdir, verbosity, uri, hashes, hexhashes):
     keypath = u.path[1:]
     s3 = boto3.client('s3')
     for file, digest in hashes.items():
-        key = join(keypath, file)
-        hash64 = b64encode(digest).decode('ascii')
-        response = s3.put_object(Body=open(join(workdir, file), 'rb'),
-                                 Bucket=bucket,
-                                 Key=key,
-                                 ContentMD5=hash64,
-                                 Metadata={'fixity-md5': hexhashes[file],
-                                           'fixity-md5b64': hash64,
-                                           },
-                                 )
-        logging.info(response)
-        if verbosity:
-            print(response)
+        if file not in ignore:
+            key = join(keypath, file)
+            hash64 = b64encode(digest).decode('ascii')
+            response = s3.put_object(Body=open(join(workdir, file), 'rb'),
+                                     Bucket=bucket,
+                                     Key=key,
+                                     ContentMD5=hash64,
+                                     Metadata={'fixity-md5': hexhashes[file],
+                                               'fixity-md5b64': hash64,
+                                               },
+                                     )
+            logging.info(response)
+            if verbosity:
+                print(response)
 
 
 if __name__ == "__main__":
@@ -222,5 +223,5 @@ if __name__ == "__main__":
         filehashes, filehasheshex = validate_fixity(args.manifest, args.directory, args.verbose, ignorelist)
     else:
         filehashes, filehasheshex = get_filesystem(args.directory, args.verbose, ignorelist)
-    put_files(args.directory, args.verbose, args.uri, filehashes, filehasheshex)
+    put_files(args.directory, args.verbose, args.uri, filehashes, filehasheshex, ignorelist)
 
