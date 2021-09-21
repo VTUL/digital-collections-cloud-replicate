@@ -11,6 +11,8 @@ from hashlib import md5
 from deepdiff import DeepDiff as diff
 import boto3
 from base64 import b64encode
+from tempfile import gettempdir
+from urllib.parse import urlparse
 
 
 def get_arguments():
@@ -22,8 +24,8 @@ def get_arguments():
                         help='path to digital collections directory.  E.g., /some/path', required=True)
     parser.add_argument('-f', '--fixity', dest='fixity', default=False, action='store_true',
                         help='perform fixity validation against manifest')
-    parser.add_argument('-l', '--log', dest='log', default='/tmp',
-                        help='directory to save logfile.  E.g., /some/path.  Default is /tmp')
+    parser.add_argument('-l', '--log', dest='log', default=gettempdir(),
+                       help='directory to save logfile.  E.g., /some/path.  Default is POSIX temp directory')
     parser.add_argument('-m', '--manifest', dest='manifest', default='checksums-md5.txt',
                         help='name of manifest file if not "checksums-md5.txt"')
     parser.add_argument('-p', '--profile', dest='profile', default='profile',
@@ -41,8 +43,7 @@ def instantiate_logger(logpath, directory, bucket, verbosity):
     dirname = basename(normpath(directory))
     bucketname= basename(normpath(bucket))
     logname = 's3-replicate_{}_{}_{}.log'.format(dirname, bucketname, timestamp)
-    logging.basicConfig(filename=join(logpath, logname), encoding='utf-8', level=logging.INFO,
-                        format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(filename=join(logpath, logname), encoding='utf-8', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     print('Logging output to {}'.format(join(logpath, logname)))
     message = 'Replicating files from {} to {}'.format(directory, bucket)
     logging.info(message)
@@ -82,7 +83,7 @@ def test_arguments(arguments):
             print(message)
     else:
         message = 'User does not have write access to bucket'
-        logging.info(message)
+        logging.error(message)
         print(message)
         error = True
     if error:
@@ -113,13 +114,23 @@ def get_manifest(manifestfile, workdir, ignored):
     manifestentries = {}
     manifestreader = open(join(workdir, manifestfile))
     linecount = 0
-    for line in manifestreader:
-        linecount += 1
-        checksum, filepath = line.split(',')
-        if not ignore_file(filepath, ignored):
-            manifestentries[filepath.strip()] = checksum.strip()
+    try:
+        for line in manifestreader:
+            linecount += 1
+            checksum, filepath = line.split(',')
+            if not ignore_file(filepath, ignored):
+                if filepath.startswith('./'):
+                    manifestentries[filepath[2:].strip()] = checksum.strip()
+                else:
+                    manifestentries[filepath.strip()] = checksum.strip()
+    except UnicodeDecodeError:
+        message = 'The manifest file is not ASCII and must be converted to be used.'
+        print(message)
+        logging.error(message)
+        exit()
     logging.info('Found %s records in manifest file', str(linecount))
     logging.info('Using %s manifest records after matching ignored files', len(manifestentries))
+
     return manifestentries
 
 
@@ -132,7 +143,7 @@ def calculate_hash(p):
 
 
 def get_filesystem(workdir, verbosity, ignored):
-    message = 'Scanning files at {}'.format(workdir)
+    message = 'Scanning files at {}.  Generating fixity will take time'.format(workdir)
     fsrecordshex = {}
     fsrecords  = {}
     logging.info(message)
@@ -177,25 +188,30 @@ def validate_fixity(manifest, directory, verbosity, ignored):
         exit()
 
 
-def put_files(workdir, verbosity, bucket, hashes, hexhashes):
-    message = 'Initiating file replication to {}'.format(bucket)
+def put_files(workdir, verbosity, uri, hashes, hexhashes, ignore):
+    message = 'Initiating file replication to {}'.format(uri)
     logging.info(message)
     if verbosity:
         print(message)
+    u = urlparse(uri)
+    bucket = u.netloc
+    keypath = u.path[1:]
     s3 = boto3.client('s3')
     for file, digest in hashes.items():
-        hash64 = b64encode(digest).decode('ascii')
-        response = s3.put_object(Body=open(join(workdir, file), 'rb'),
-                                 Bucket=bucket,
-                                 Key=file,
-                                 ContentMD5=hash64,
-                                 Metadata={'fixity-md5': hexhashes[file],
-                                           'fixity-md5b64': hash64,
-                                           },
-                                 )
-        logging.info(response)
-        if verbosity:
-            print(response)
+        if file not in ignore:
+            key = join(keypath, file)
+            hash64 = b64encode(digest).decode('ascii')
+            response = s3.put_object(Body=open(join(workdir, file), 'rb'),
+                                     Bucket=bucket,
+                                     Key=key,
+                                     ContentMD5=hash64,
+                                     Metadata={'fixity-md5': hexhashes[file],
+                                               'fixity-md5b64': hash64,
+                                               },
+                                     )
+            logging.info(response)
+            if verbosity:
+                print(response)
 
 
 if __name__ == "__main__":
@@ -207,5 +223,5 @@ if __name__ == "__main__":
         filehashes, filehasheshex = validate_fixity(args.manifest, args.directory, args.verbose, ignorelist)
     else:
         filehashes, filehasheshex = get_filesystem(args.directory, args.verbose, ignorelist)
-    put_files(args.directory, args.verbose, args.bucket, filehashes, filehasheshex)
+    put_files(args.directory, args.verbose, args.uri, filehashes, filehasheshex, ignorelist)
 
