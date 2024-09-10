@@ -167,9 +167,9 @@ Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact
-[fumiko@braggtown.com](mailto:fumiko@braggtown.com?subject=[GitHub]%20Sdigital-collections-cloud-replicate)
+[summer@braggtown.com](mailto:summer@braggtown.com?subject=[GitHub]%20Sdigital-collections-cloud-replicate)
 
-[@jjtuttle](https://twitter.com/@jjtuttle) 
+
 
 
 Project Link: [https://github.com/VTUL/digital-collections-cloud-replicate](https://github.com/VTUL/digital-collections-cloud-replicate)
