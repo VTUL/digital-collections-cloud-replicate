@@ -1,9 +1,9 @@
-boto3==1.18.36
-botocore==1.21.36
-deepdiff==5.5.0
-jmespath==0.10.0
-ordered-set==4.0.2
-python-dateutil==2.8.2
-s3transfer==0.5.0
+boto3==1.35.18
+botocore==1.35.18
+deepdiff==8.0.1
+jmespath==1.0.1
+orderly-set==5.2.2
+python-dateutil==2.9.0.post0
+s3transfer==0.10.2
 six==1.16.0
-urllib3==1.26.6
+urllib3==2.2.3
