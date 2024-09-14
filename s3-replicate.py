@@ -145,10 +145,8 @@ def calculate_hash(p):
     return md5hash
 
 
-def get_filesystem(workdir, verbosity, fixity, ignored):
+def get_filesystem(workdir, verbosity, ignored):
     message = 'Scanning files at {}.'.format(workdir)
-    if fixity:
-        message += "  Generating fixity will take time."
     fsrecordshex = {}
     fsrecords  = {}
     logging.info(message)
@@ -226,8 +224,8 @@ if __name__ == "__main__":
     instantiate_logger(args.log, args.directory, args.uri, args.verbose)
     test_arguments(args)
     if args.fixity:
-        filehashes, filehasheshex = validate_fixity(args.manifest, args.directory, args.verbose, args.fixity, ignorelist)
+        filehashes, filehasheshex = validate_fixity(args.manifest, args.directory, args.verbose, ignorelist)
     else:
-        filehashes, filehasheshex = get_filesystem(args.directory, args.verbose, args.fixity, ignorelist)
+        filehashes, filehasheshex = get_filesystem(args.directory, args.verbose, ignorelist)
     put_files(args.directory, args.verbose, args.uri, filehashes, filehasheshex, ignorelist)
 
