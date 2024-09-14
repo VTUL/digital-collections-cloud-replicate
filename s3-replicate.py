@@ -30,6 +30,10 @@ def get_arguments():
                         help='name of manifest file if not "checksums-md5.txt"')
     parser.add_argument('-p', '--profile', dest='profile', default='profile',
                         help='aws profile name.  E.g., default.  Default is default.')
+
+    parser.add_argument('-s', '--separator', dest='separator', nargs='?', const=',',
+                        help='delimiter in manifest file.  Default is ",".')
+
     parser.add_argument('-u', '--uri', dest='uri', required=True,
                         help='S3 URI.  E.g. s3://vt-testbucket/SpecScans/IAWA3/JDW/')
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, action='store_true',
@@ -117,7 +121,7 @@ def get_manifest(manifestfile, workdir, ignored):
     try:
         for line in manifestreader:
             linecount += 1
-            checksum, filepath = line.split(',')
+            checksum, filepath = line.split(args.separator)
             if not ignore_file(filepath, ignored):
                 if filepath.startswith('./'):
                     manifestentries[filepath[2:].strip()] = checksum.strip()
@@ -130,7 +134,6 @@ def get_manifest(manifestfile, workdir, ignored):
         exit()
     logging.info('Found %s records in manifest file', str(linecount))
     logging.info('Using %s manifest records after matching ignored files', len(manifestentries))
-
     return manifestentries
 
 
@@ -142,8 +145,10 @@ def calculate_hash(p):
     return md5hash
 
 
-def get_filesystem(workdir, verbosity, ignored):
-    message = 'Scanning files at {}.  Generating fixity will take time'.format(workdir)
+def get_filesystem(workdir, verbosity, fixity, ignored):
+    message = 'Scanning files at {}.'.format(workdir)
+    if fixity:
+        message += "  Generating fixity will take time."
     fsrecordshex = {}
     fsrecords  = {}
     logging.info(message)
@@ -171,6 +176,7 @@ def get_filesystem(workdir, verbosity, ignored):
 
 
 def validate_fixity(manifest, directory, verbosity, ignored):
+    print("Checking fixity")
     manifestrecords = get_manifest(manifest, directory, ignored)
     fsrecords, fsrecordshex= get_filesystem(directory, verbosity, ignored)
     if manifestrecords == fsrecordshex:
@@ -220,8 +226,8 @@ if __name__ == "__main__":
     instantiate_logger(args.log, args.directory, args.uri, args.verbose)
     test_arguments(args)
     if args.fixity:
-        filehashes, filehasheshex = validate_fixity(args.manifest, args.directory, args.verbose, ignorelist)
+        filehashes, filehasheshex = validate_fixity(args.manifest, args.directory, args.verbose, args.fixity, ignorelist)
     else:
-        filehashes, filehasheshex = get_filesystem(args.directory, args.verbose, ignorelist)
+        filehashes, filehasheshex = get_filesystem(args.directory, args.verbose, args.fixity, ignorelist)
     put_files(args.directory, args.verbose, args.uri, filehashes, filehasheshex, ignorelist)
 
